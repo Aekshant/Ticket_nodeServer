@@ -25,14 +25,14 @@ exports.signupUser = async ( body ) => {
 exports.signinUser = async ( body ) => {
     try {
         const data = await User.findOne( { where : { email : body.email }, attributes : [ "id", "password" ] , raw : true } )
-        if ( !data ) return ( "Your are not registered" )
+        if ( !data ) return ( { data : null, message : "Your are not registered"} )
     
         const checkPassword = compareSync( body.password, data.password );
-        if( !checkPassword ) return ( "Wrong Password" )
+        if( !checkPassword ) return ( { data : null, message : "Wrong Password"  } )
 
         data.token = sign( { userId : data.id }, process.env.JWT_SECRET );
         delete data[ "password" ]
-        return data
+        return ( { data : data, message : true } )
     } catch ( error ) {
         throw ( error )
     }

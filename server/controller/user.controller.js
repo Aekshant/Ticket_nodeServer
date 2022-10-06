@@ -17,10 +17,11 @@ exports.signupUser = async ( req, res ) => {
 exports.signinUser = async ( req, res ) => {
     try {
         const body = req.body
-        const data = await userServices.signinUser ( body )
+        const { data, message } = await userServices.signinUser ( body )
         res.send({
             status : true,
-            message: data
+            message: message,
+            data : data
         })
     } catch (error) {
         throw ( error )
